@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 
 def label_transform(z):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    return torch.tensor(z)
+    return torch.tensor(z).to(device)
 
 
 def transform(z):
@@ -56,8 +56,8 @@ def main():
     batch_size = 64
     epochs = 18
 
-    train_data = CharacterDataset('data/Train_Set_Handwritten.csv', transform, target_transform=label_transform)
-    test_data = CharacterDataset('data/Test_Set_Handwritten.csv', transform, target_transform=label_transform)
+    train_data = CharacterDataset('data/Train_Set_Handwritten.csv', transform=transform, target_transform=label_transform)
+    test_data = CharacterDataset('data/Test_Set_Handwritten.csv', transform=transform, target_transform=label_transform)
     train_dataloader = DataLoader(train_data, batch_size=batch_size, shuffle=True)
     test_dataloader = DataLoader(test_data, batch_size=batch_size, shuffle=True)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'

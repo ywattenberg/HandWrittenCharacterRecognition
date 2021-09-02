@@ -67,12 +67,20 @@ def main():
 
     loss_fn = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=momentum)
-    for t in range(epochs):
-        print(f"Epoch {t + 1}\n-------------------------------")
-        train_loop(train_dataloader, model, loss_fn, optimizer)
-        test_loop(test_dataloader, model, loss_fn)
-    print("Done!")
-    torch.save(model.state_dict(), 'model_weights.pth')
+    try:
+        for t in range(epochs):
+            print(f"Epoch {t + 1}\n-------------------------------")
+            train_loop(train_dataloader, model, loss_fn, optimizer)
+            test_loop(test_dataloader, model, loss_fn)
+        print("Done!")
+        torch.save(model.state_dict(), 'model_weights.pth')
+    except KeyboardInterrupt:
+        print('Abort...')
+        safe = input('Safe model [y]es/[n]o: ')
+        if safe == 'y' or safe == 'Y':
+            torch.save(model.state_dict(), 'model_weights.pth')
+        else: 
+            print('Not saving...')
 
 
 if __name__ == '__main__':
